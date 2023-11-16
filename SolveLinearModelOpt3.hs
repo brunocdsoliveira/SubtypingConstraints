@@ -142,6 +142,9 @@ w10 = [Sub (Var "b") (Var "c"), Exists (Var "a") "c" TTop, Exists TBot "b" TTop,
 w11 = [Sub (Var "c") (Var "b"), Exists TBot "c" (Var "a"), Exists TBot "b" TTop, Exists TBot "a" TTop]
 
 
+w12 = [Sub (Var "c") (Nominal "Student"), Exists TBot "c" (Var "a"), Exists TBot "b" TTop, Exists TBot "a" TTop]
+
+
 {-
 w7 = [Exists [Fun (Var 0) (Var 0), Fun (Nominal "Student") (Nominal "Student")] [], Exists [Fun (Var 0) (Var 0),Fun (Nominal "Person") (Nominal "Person")] [], Exists [] []]
 
