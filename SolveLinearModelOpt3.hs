@@ -51,8 +51,8 @@ lub e f (Fun a b) (Fun c d)        =
    do (t1,ws1,ws3) <- glb e f a c
       (t2,ws2,ws4) <- lub e (f + (length ws1 `div` 3)) b d    -- Another hack for not dealing with freshness properly
       return (Fun t1 t2, ws1 ++ ws2,ws3 ++ ws4)
-lub e f (Var i) t                  = let fr = show f in Just (Nominal fr, [Sub (Var i) (Var fr), Sub t (Var fr)], [Exists TBot fr TTop])
-lub e f t (Var i)                  = let fr = show f in Just (Nominal fr, [Sub (Var i) (Var fr), Sub t (Var fr)], [Exists TBot fr TTop])
+lub e f (Var i) t                  = let fr = show f in Just (Var fr, [Sub (Var i) (Var fr), Sub t (Var fr)], [Exists TBot fr TTop])
+lub e f t (Var i)                  = let fr = show f in Just (Var fr, [Sub (Var i) (Var fr), Sub t (Var fr)], [Exists TBot fr TTop])
 lub e _ _ _                        = Nothing
 
 glb :: NominalEnv -> Int -> Typ -> Typ -> Maybe (Typ, WorkList, WorkList)
@@ -66,8 +66,8 @@ glb e f (Fun a b) (Fun c d)        =
    do (t1,ws1,ws3) <- lub e f a c
       (t2,ws2,ws4) <- glb e (f + (length ws1 `div` 3)) b d     -- freshness hack
       return (Fun t1 t2, ws1 ++ ws2, ws3 ++ ws4)
-glb e f (Var i) t                  = let fr = show f in Just (Nominal fr, [Sub  (Var fr) (Var i), Sub (Var fr) t], [Exists TBot fr TTop])
-glb e f t (Var i)                  = let fr = show f in Just (Nominal fr, [Sub  (Var fr) (Var i), Sub (Var fr) t], [Exists TBot fr TTop])
+glb e f (Var i) t                  = let fr = show f in Just (Var fr, [Sub  (Var fr) (Var i), Sub (Var fr) t], [Exists TBot fr TTop])
+glb e f t (Var i)                  = let fr = show f in Just (Var fr, [Sub  (Var fr) (Var i), Sub (Var fr) t], [Exists TBot fr TTop])
 glb e _ _ _                        = Nothing
 
 -- I know that the two nominal types are different
@@ -144,6 +144,8 @@ w11 = [Sub (Var "c") (Var "b"), Exists TBot "c" (Var "a"), Exists TBot "b" TTop,
 
 w12 = [Sub (Var "c") (Nominal "Student"), Exists TBot "c" (Var "a"), Exists TBot "b" TTop, Exists TBot "a" TTop]
 
+
+w13 = [Exists (Var "a") "c" (Nominal "Student"), Sub (Nominal "Tree") (Var "a"), Exists TBot "a" TTop]
 
 {-
 w7 = [Exists [Fun (Var 0) (Var 0), Fun (Nominal "Student") (Nominal "Student")] [], Exists [Fun (Var 0) (Var 0),Fun (Nominal "Person") (Nominal "Person")] [], Exists [] []]
